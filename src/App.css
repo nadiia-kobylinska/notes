@@ -1,0 +1,181 @@
+*,*:after,*:before{
+    box-sizing: border-box;
+}
+.fixed-button{
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+}
+.notes-item{
+    margin-bottom: 2rem;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.notes-btns {
+    display: flex;
+    justify-content: flex-end;
+    visibility: hidden;
+    transition: 0.5s;
+}
+.notes-item:hover .notes-btns{
+    visibility: visible;
+}
+.fullscreen-container{
+    min-height: 100vh;
+}
+.characters {
+    margin-bottom: 8px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.text-field {
+    position: relative;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    padding-right: 2.5rem;
+}
+.editable-field{
+    position: relative;
+}
+.editable-field label{
+    color: rgba(0, 0, 0, 0.6);
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    padding: 0;
+    position: relative;
+    display: block;
+    transform-origin: top left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    -webkit-transition: color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,-webkit-transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+    transition: color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+}
+.text-orange {
+    color: #ccae07;
+}
+.text-red {
+    color: darkred;
+}
+.text-field:after {
+    border-bottom: 2px solid #9c27b0;
+    left: 0;
+    bottom: 0;
+    content: "";
+    position: absolute;
+    right: 0;
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    -ms-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: -webkit-transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+    transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+    pointer-events: none;
+}
+.text-field:before {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    left: 0;
+    bottom: 0;
+    content: "\00a0";
+    position: absolute;
+    right: 0;
+    -webkit-transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    pointer-events: none;
+}
+.text-field:hover:before {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.87);
+}
+
+.text-field:focus:after {
+    transform:scale(1);
+}
+
+.text-field {
+    outline:none
+}
+:root{
+    --deg:0;
+}
+
+.circle-wrap {
+    margin: 0 auto;
+    width: calc(2rem + 4px);
+    height: calc(2rem + 4px);
+    background: #e6e2e7;
+    border-radius: 50%;
+    --degp:calc(var(--deg) * (180deg / 100));
+}
+
+.circle-wrap .circle .mask,
+.circle-wrap .circle .fill {
+    width: calc(2rem + 4px);
+    height: calc(2rem + 4px);
+    position: absolute;
+    border-radius: 50%;
+}
+
+.circle-wrap .circle .mask {
+    clip: rect(0px, calc(2rem + 4px), calc(2rem + 4px), calc(1rem + 2px));
+}
+
+.circle-wrap .circle .mask .fill {
+    clip: rect(0px, calc(1rem + 2px), calc(2rem + 4px), 0px);
+    background-color: #9e00b1;
+}
+
+.circle-wrap .circle .mask.full,
+.circle-wrap .circle .fill {
+    animation: fill ease-in-out 0.2s;
+    transform: rotate(var(--degp));
+}
+
+@keyframes fill {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(var(--degp));
+    }
+}
+
+.circle-wrap .inside-circle {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: #fff;
+    line-height: 2;
+    text-align: center;
+    margin-top: 2px;
+    margin-left: 2px;
+    position: absolute;
+    z-index: 100;
+    font-size: 1em;
+}
+.circle-red.circle-wrap .circle .mask .fill {
+    background-color: #d32f2f;
+}
+.notes-create{
+    top: 4rem;
+    position: sticky;
+}
+.html-field{
+    overflow-x: auto;
+    min-height: 10rem;
+}
+.notes-description{
+    position: relative;
+    word-break: break-word;
+    max-width: 100%;
+    overflow-x: auto;
+}
