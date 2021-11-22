@@ -5,7 +5,6 @@
 /.idea
 yarn.lock
 
-/build
 .DS_Store
 .env.local
 .env.development.local
