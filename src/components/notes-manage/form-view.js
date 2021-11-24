@@ -7,6 +7,7 @@ import EditDiv from "../edit-div";
 import HTMLDiv from "../html-div";
 import validateTextLength from "../../utility/validate-text-length";
 import cleanUpHTML from "../../utility/clean-up-html";
+import CreateButton from "../create-button";
 
 const Form = (props) => {
     const [loading, setLoading] = useState(false);
@@ -88,20 +89,22 @@ const Form = (props) => {
             noValidate
             autoComplete="off"
             sx={{
-                mt: 10,
-                maxWidth: 600,
+                mt: 1,
                 '& .MuiTextField-root': { m: 1, width: '100%' },
             }}
             onSubmit={saveNote}
         >
-            <Typography
-                variant="h4"
-                component="div"
-                gutterBottom
-                className={"fi=orm-title"}
-                sx={{ mb: 5}}>
-                {!editMode ? "New Note" : "Edit Note"}
-            </Typography>
+            <Box sx={{display:'flex',justifyContent:'space-between',marginBottom:'1rem',mt:10, alignItems:'flex-start'}}>
+                <Typography
+                    variant="h4"
+                    component="div"
+                    gutterBottom
+                    className={"fi=orm-title"}
+                    sx={{ mb: 5}}>
+                    {!editMode ? "New Note" : "Edit Note"}
+                </Typography>
+                <CreateButton create={props.create}/>
+            </Box>
             <EditDiv
                 changeEv = {changeTitle}
                 countChar = {countChar}

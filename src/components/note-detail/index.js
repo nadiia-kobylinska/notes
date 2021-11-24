@@ -3,7 +3,7 @@ import Note from "./note-detail-view";
 import * as PropTypes from "prop-types";
 
 const NoteDetail = (props) => {
-    return <Note data={props.note}/>
+    return <Note data={props.note} create={props.create}/>
 }
 
 NoteDetail.propTypes = {

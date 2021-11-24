@@ -9,7 +9,7 @@ const NotePreview = (props) => {
     const {title, content, id} = props.data;
 
     return(
-    <Card className={"notes-item"} sx={{ maxWidth: 345 }} onClick={()=>props.open(id)}>
+    <Card className={"notes-item"} onClick={()=>props.open(id)}>
         <CardActionArea component={"div"}>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div"  className={"notes-title"}>

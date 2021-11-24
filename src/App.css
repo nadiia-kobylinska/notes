@@ -21,6 +21,11 @@
 .notes-item:hover .notes-btns{
     visibility: visible;
 }
+@media (max-width: 768px) {
+    .notes-item .notes-btns{
+        visibility: visible;
+    }
+}
 .fullscreen-container{
     min-height: 100vh;
 }
@@ -178,4 +183,16 @@
     word-break: break-word;
     max-width: 100%;
     overflow-x: auto;
+}
+.notes-description img {
+    max-width: 100%;
+}
+.notes-description *{
+    box-sizing: border-box;
+}
+.html-field img {
+    max-width: 100%;
+}
+.notes-description a * {
+    pointer-events: none;
 }

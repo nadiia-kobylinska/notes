@@ -1,13 +1,13 @@
 import * as React from 'react';
 import './App.css';
-import {Box, Fab} from '@mui/material';
+import {Box, Fab, Grid} from '@mui/material';
 import Container from '@mui/material/Container';
 import AddIcon from '@mui/icons-material/Add';
 import NotesManage from "./components/notes-manage";
-import NoteList from "./components/notes-list";
 import NoteDetail from "./components/note-detail";
 import {getNotesDS, setNotesDS} from "./services/data.source";
 import HeadlineButtonScreen from "./components/headline-button-screen";
+import Search from "./components/search";
 
 class App extends React.Component {
     constructor(props) {
@@ -63,11 +63,13 @@ class App extends React.Component {
         event.stopPropagation();
         const notes = this.state.notes.filter(note => note.id !== id)
         setNotesDS(notes);
+
         this.setState((state)=>({
             notes: notes,
-            id: false,
-            editMode: !state.id,
-            previewMode: !!state.id
+            id: id === state.id ? false : state.id,
+            editMode: id === state.id ? false : true,
+            previewMode:  id === state.id ? true : false
+
         }));
     }
     edit(event, id){
@@ -103,13 +105,9 @@ class App extends React.Component {
                         />
                     }
                     {(this.state.notes.length || !this.state.isEmpty) &&
-                        <Box sx={{display: 'flex', width:'100%'}}>
-                            <NoteList notes={this.state.notes} delete={this.delete} edit={this.edit} open={this.open}/>
-                            <Box component="div" sx={{
-                                maxWidth:'100%',
-                                overflow:'hidden',
-                                width:'100%'
-                            }}>
+                        <Grid container spacing={5} columns={16}>
+                            <Search notes={this.state.notes} delete={this.delete} edit={this.edit} open={this.open}/>
+                            <Grid item xs={16} md={11}>
                                 {((this.state.editMode || this.state.id) && !this.state.previewMode) &&
                                     <Box component="div" className={"notes-create"}
                                          sx={{
@@ -120,12 +118,14 @@ class App extends React.Component {
                                             cancel={this.cancel}
                                             notes={this.state.notes}
                                             save={this.save}
+                                            create={this.create}
                                         />
                                     </Box>
                                 }
-                                {this.state.previewMode && <NoteDetail note={openNote}/>}
-                            </Box>
-                        </Box>
+                                {this.state.previewMode && <NoteDetail note={openNote} create={this.create}/>}
+                            </Grid>
+
+                        </Grid>
                     }
                 </Container>
                 <div className={"fixed-button"}>
