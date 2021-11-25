@@ -44,7 +44,7 @@ const Note = (props) => {
     }
     return (
     <Box component="div" className={"notes-preview"} sx={{mt: 1, mb:10, flexGrow:1, width:'100%'}}>
-        <Box sx={{display:'flex',justifyContent:'space-between',marginBottom:'1rem',mt:10, alignItems:'flex-start'}}>
+        <Box sx={{display:'flex',justifyContent:'space-between',marginBottom:'1rem',mt:10, alignItems:'flex-start', flexWrap:'wrap-reverse'}}>
             <Typography variant="h4" component="div" gutterBottom className={"notes-title"} sx={{ mb: 5}}>
                 {title}
             </Typography>

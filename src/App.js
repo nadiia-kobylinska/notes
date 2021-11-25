@@ -107,7 +107,7 @@ class App extends React.Component {
                     {(this.state.notes.length || !this.state.isEmpty) &&
                         <Grid container spacing={5} columns={16}>
                             <Search notes={this.state.notes} delete={this.delete} edit={this.edit} open={this.open}/>
-                            <Grid item xs={16} md={11}>
+                            <Grid item xs={16} md={11} className={"col-wrp"}>
                                 {((this.state.editMode || this.state.id) && !this.state.previewMode) &&
                                     <Box component="div" className={"notes-create"}
                                          sx={{

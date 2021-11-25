@@ -79,7 +79,10 @@ const Form = (props) => {
         setTitle(e.target.innerText);
     }
     function changeContent(e){
-        cleanUpHTML(e.target,'iframe, script, noscript, frame, form, input, textarea');
+        cleanUpHTML(e.target,
+            'iframe, script, noscript, frame, form, input, textarea',
+            ['data-ga ','id','jsaction', 'jscontroller', 'onclick', 'data-ved', 'ping', 'data-google-query-id','itemprop']
+        );
         setContent(e.target.innerHTML);
     }
 
@@ -103,7 +106,6 @@ const Form = (props) => {
                     sx={{ mb: 5}}>
                     {!editMode ? "New Note" : "Edit Note"}
                 </Typography>
-                <CreateButton create={props.create}/>
             </Box>
             <EditDiv
                 changeEv = {changeTitle}

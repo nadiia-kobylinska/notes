@@ -9,6 +9,7 @@ const CreateButton = (props)=>{
         startIcon={<AddIcon/>}
         size="large"
         onClick={props.create}
+        sx={{ mb: 5}}
     >
         Create note
     </Button>);

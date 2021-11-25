@@ -1,10 +1,13 @@
 import * as PropTypes from "prop-types";
+import {Button} from "@mui/material";
+import EditorPanel from "../editor-panel";
 const HTMLDiv = (props) => {
     return (
         <div className={'MuiFormControl-root MuiTextField-root editable-field'}>
             <label className={"MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-standard MuiFormLabel-root MuiFormLabel-colorSecondary "}>
                 Content
             </label>
+            <EditorPanel editor={props.fieldRef}/>
             <div ref={props.fieldRef}
                  className="text-field html-field"
                  contentEditable

@@ -196,3 +196,8 @@
 .notes-description a * {
     pointer-events: none;
 }
+@media screen and (max-width:899px){
+    .col-wrp{
+        order: -1;
+    }
+}

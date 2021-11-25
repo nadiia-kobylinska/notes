@@ -1,7 +1,7 @@
-Element.prototype.removeAttributes = function(...attrs) {
+Element.prototype.removeAttributes = function(attrs) {
     attrs.forEach(attr => this.removeAttribute(attr))
 }
-function cleanUpHTML(el,tags){
+function cleanUpHTML(el,tags, attr=[]){
     el.querySelectorAll(tags).forEach((e)=>{
         e.remove();
     });
@@ -9,7 +9,7 @@ function cleanUpHTML(el,tags){
         if(e.style.position === 'fixed'){
             e.style.position = 'absolute'
         }
-        e.removeAttributes('data-ga ','id', 'onclick','data-google-query-id','itemprop');
+        e.removeAttributes(attr);
     })
 }
 export default cleanUpHTML;

@@ -22,6 +22,7 @@ const Search = (props)=>{
             alignItems: 'flex-start',
             flexDirection: 'column',
             mt: 10,
+            mb: 10,
             width:'100%'
         }}>
             <Stack spacing={2} sx={{ width: '100%' }}>
