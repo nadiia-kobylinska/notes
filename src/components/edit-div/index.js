@@ -14,28 +14,12 @@ const EditDiv = (props) => {
                  onFocus={props.changeEv}
                  onKeyUp={props.changeEv}
             ></div>
-            {props.percentChar!==0 &&
-            <div className="characters">
-                <div className={props.countChar >= 0 ? "circle-wrap" : "circle-red circle-wrap"} style={{"--deg": props.percentChar}}>
-                    <div className="circle">
-                        <div className="mask full">
-                            <div className="fill"> </div>
-                        </div>
-                        <div className="mask half">
-                            <div className="fill"> </div>
-                        </div>
-                        <div className="inside-circle">{props.countChar<10 && <span className={props.countChar >= 0 ? "text-orange" : "text-red"}>{props.countChar} </span> }
-                        </div>
-                    </div>
-                </div>
-            </div>}
+            {props.counter}
         </div>
     );
 }
 EditDiv.propTypes = {
-    percentChar: PropTypes.number,
     fieldRef: PropTypes.any,
     changeEv: PropTypes.func,
-    countChar: PropTypes.number
 };
 export default EditDiv;

@@ -1,5 +1,4 @@
 import * as PropTypes from "prop-types";
-import {Button} from "@mui/material";
 import EditorPanel from "../editor-panel";
 const HTMLDiv = (props) => {
     return (
@@ -15,6 +14,7 @@ const HTMLDiv = (props) => {
                  onFocus={props.changeEv}
                  onKeyUp={props.changeEv}
             ></div>
+            {props.counter}
         </div>
     );
 }
