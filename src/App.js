@@ -17,7 +17,7 @@ class App extends React.Component {
             isEmpty: !getNotesDS.length,
             previewMode: getNotesDS.length>0,
             editMode: false,
-            id: false
+            id: null
         }
         this.onCreate = this.onCreate.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -31,7 +31,7 @@ class App extends React.Component {
         this.setState({
             isEmpty: false,
             editMode: true,
-            id: false,
+            id: Date.now(),
             previewMode: false
         });
     }
@@ -40,25 +40,23 @@ class App extends React.Component {
             isEmpty: true,
             editMode: false,
             previewMode: true,
-            id: false
+            id: null
         });
     }
     updateList(notes) {
         this.setState({
             notes: notes,
-            id: false
+            id: Date.now()
         });
     }
-    onSave(note, id) {
+    onSave(note) {
         let notes = this.state.notes;
-        const index = notes.findIndex((obj => obj.id === id));
+        const index = notes.findIndex((obj => obj.id === note.id));
 
         if (index >= 0){
-            note.id = id;
             notes[index] = note;
         }else{
-            note.id = Date.now();
-            notes = [ ...notes, note]
+            notes = [note, ...notes]
         }
         setNotesDS(notes);
         this.updateList(notes);
@@ -118,6 +116,7 @@ class App extends React.Component {
                                     <Box component="div" className={"notes-create"} sx={{ mb: 10 }}>
                                         <NotesManage
                                             onCancel={this.onCancel}
+                                            id={this.state.id}
                                             note={note}
                                             onSave={this.onSave}
                                         />

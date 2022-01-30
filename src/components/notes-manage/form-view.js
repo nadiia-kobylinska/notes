@@ -4,7 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import CheckIcon from "@mui/icons-material/Check";
 import {useEffect, useReducer} from "react";
 import EditDiv from "../edit-div";
-import validateTextLength from "../../utility/validate-text-length";
+import calcCountChar from "../../utility/calc-count-char";
 import cleanUpHTML from "../../utility/clean-up-html";
 import formReducer from "./formReducer";
 import RoundCounter from "../round-counter";
@@ -13,20 +13,17 @@ import {isValid} from "./func";
 const Form = (props) => {
 
     const note = props.note;
-
-    const initialState = {
-        loading: false,
-        title: note?.title ?? '',
-        content: note?.content ?? '',
-        editNote: note?.id ?? null,
-        countCharTitle: 0,
-        percentCharTitle: 0,
-        countCharContent: 0,
-        percentCharContent: 0,
-        isValid: false
-    }
-
-    const [state, dispatch] = useReducer(formReducer, initialState, (initialState) => {
+    const [state, dispatch] = useReducer(formReducer, {
+            loading: false,
+            title: note ? note.title : '',
+            content: note ? note.content : '',
+            noteID: note ? note.id : props.id,
+            countCharTitle: 0,
+            percentCharTitle: 0,
+            countCharContent: 0,
+            percentCharContent: 0,
+            isValid: false
+        }, (initialState) => {
         return {...initialState, isValid: isValid(initialState)};
     });
 
@@ -35,49 +32,62 @@ const Form = (props) => {
             resetForm();
             return;
         }
-        if (note.id !== state.editNote) {
-            dispatch({type: 'change', payload: {...initialState,
-                editNote: note.id,
+        if (note.id !== state.noteID) {
+            dispatch({type: 'change', payload: {
+                noteID: note.id,
                 title: note.title,
                 content: note.content
             }})
         }
-    },[note]);
+    },[note,props.id]);
 
     function resetForm(){
-        dispatch({type: 'reset', payload: initialState});
+        dispatch({type: 'reset', payload: {
+            loading: false,
+            title: '',
+            content: '',
+            noteID: props.id,
+            countCharTitle: 0,
+            percentCharTitle: 0,
+            countCharContent: 0,
+            percentCharContent: 0,
+            isValid: false
+        }});
     }
     function onSubmit(e) {
         e.preventDefault();
-        dispatch({type: 'loading', payload: {loading: true}})
-        props.onSave({
+        const newNote = {
+            id: state.noteID,
             title: state.title,
             content: state.content
-        }, state.editNote);
-
-        resetForm();
+        }
+        //resetForm();
+        props.onSave(newNote);
     }
     function onChangeTitle(e){
-        const result = validateTextLength(e,100);
-        dispatch({type: 'change', payload: {
-                countCharTitle: result.count,
-                percentCharTitle:result.percent,
+        const countChar = calcCountChar(e.target, 100);
+        dispatch({
+            type: 'change',
+            payload: {
+                countCharTitle: countChar.count,
+                percentCharTitle:countChar.percent,
                 title: e.target.innerText
-        }})
+            }
+        })
     }
     function onChangeContent(e){
         cleanUpHTML(e.target,
             'iframe, script, noscript, frame, form, input, textarea',
             ['data-ga ','id','jsaction', 'jscontroller', 'onclick', 'data-ved', 'ping', 'data-google-query-id','itemprop']
         );
-        const result = validateTextLength(e,1000, false);
+        const countChar = calcCountChar(e.target,1000, false);
         dispatch({type: 'change', payload: {
-            countCharContent: result.count,
-            percentCharContent:result.percent,
+            countCharContent: countChar.count,
+            percentCharContent:countChar.percent,
             content: e.target.innerHTML
         }})
     }
-    const pageTitle = !state.editNote ? "New Note" : "Edit Note";
+    const pageTitle = !state.noteID ? "New Note" : "Edit Note";
 
     return (
         <Box noValidate component="form" autoComplete="off" sx={{mt: 1, '& .MuiTextField-root': { m: 1, width: '100%' }}}
@@ -92,18 +102,18 @@ const Form = (props) => {
                 type = "text"
                 label = "Title"
                 value = {state.title}
-                editNote = {state.editNote}
+                noteID = {state.noteID}
                 changeEv = {onChangeTitle}
-                counter = <RoundCounter count={state.countCharTitle} percent={state.percentCharTitle}/>
+                counter = {<RoundCounter count={state.countCharTitle} percent={state.percentCharTitle}/>}
                 focus = {true}
             />
             <EditDiv
                 type = "html"
                 label = "Content"
                 value = {state.content}
-                editNote = {state.editNote}
+                noteID = {state.noteID}
                 changeEv = {onChangeContent}
-                counter = <RoundCounter count={state.countCharContent} percent={state.percentCharContent}/>
+                counter = {<RoundCounter count={state.countCharContent} percent={state.percentCharContent}/>}
                 focus = {false}
             />
             <Stack direction="row" spacing={4} sx={{mt: 3, justifyContent:'flex-end'}}>

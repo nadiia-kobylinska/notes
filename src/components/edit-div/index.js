@@ -9,8 +9,8 @@ const EditDiv = (props) => {
 
     useEffect(() => {
         defaultRef.current = props.value;
-        setForceUpd(props.value);
-    }, [props.editNote]);
+        setForceUpd(defaultRef.current);
+    }, [props.noteID]);
 
     return (
         <div className={'MuiFormControl-root MuiTextField-root editable-field'}>

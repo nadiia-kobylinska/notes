@@ -74,24 +74,24 @@ function getCurrentCursorPosition(parent) {
 
     return charCount;
 }
+function highlightOverlimit(field, html, limit, pos){
+    let start = html.slice(0, limit);
+    let overlimit = html.slice(limit);
+    overlimit = `<span style="background:red; color:#ffffff">${overlimit}</span>`;
+    field.innerHTML = start + overlimit;
+    setCurrentCursorPosition(field, pos);
+}
 
-const validateTextLength = (e, limit, highlight= true)=>{
-    const field = e.target;
+const calcCountChar = (field, limit, highlight= true)=>{
     const html = field.innerText;
     let count = limit - html.length;
     let percent = html.length * 100 / limit;
-    let pos = getCurrentCursorPosition(field);
     if (highlight && html.length > limit) {
-        let start = html.slice(0, limit);
-        let overlimit = html.slice(limit);
-        overlimit = `<span style="background:red; color:#ffffff">${overlimit}</span>`;
-        field.innerHTML = start + overlimit;
-        setCurrentCursorPosition(field, pos);
+        highlightOverlimit(field, html, limit, getCurrentCursorPosition(field))
     }
     return {
-        valid: percent<=100,
-        count : count,
-        percent : percent<=100 ? percent : 100.1
+        count: count,
+        percent: percent<=100 ? percent : 100.1
     }
 }
-export default validateTextLength;
+export default calcCountChar;
