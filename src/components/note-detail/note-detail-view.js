@@ -48,7 +48,7 @@ const Note = (props) => {
             <Typography variant="h4" component="div" gutterBottom className={"notes-title"} sx={{ mb: 5}}>
                 {title}
             </Typography>
-            <CreateButton create={props.create}/>
+            <CreateButton onCreate={props.onCreate}/>
         </Box>
         <Box component="div">
             <Typography ref={contentRef} variant="body2" gutterBottom className={"notes-description"}

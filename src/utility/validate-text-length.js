@@ -75,9 +75,9 @@ function getCurrentCursorPosition(parent) {
     return charCount;
 }
 
-const validateTextLength = (e, field, limit, ref, highlight= true)=>{
+const validateTextLength = (e, limit, highlight= true)=>{
+    const field = e.target;
     const html = field.innerText;
-
     let count = limit - html.length;
     let percent = html.length * 100 / limit;
     let pos = getCurrentCursorPosition(field);
@@ -85,7 +85,7 @@ const validateTextLength = (e, field, limit, ref, highlight= true)=>{
         let start = html.slice(0, limit);
         let overlimit = html.slice(limit);
         overlimit = `<span style="background:red; color:#ffffff">${overlimit}</span>`;
-        ref.current.innerHTML = start + overlimit;
+        field.innerHTML = start + overlimit;
         setCurrentCursorPosition(field, pos);
     }
     return {

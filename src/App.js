@@ -19,15 +19,15 @@ class App extends React.Component {
             editMode: false,
             id: false
         }
-        this.create = this.create.bind(this);
-        this.cancel = this.cancel.bind(this);
+        this.onCreate = this.onCreate.bind(this);
+        this.onCancel = this.onCancel.bind(this);
         this.updateList = this.updateList.bind(this);
         this.delete = this.delete.bind(this);
         this.edit = this.edit.bind(this);
-        this.save = this.save.bind(this);
+        this.onSave = this.onSave.bind(this);
         this.open = this.open.bind(this);
     }
-    create() {
+    onCreate() {
         this.setState({
             isEmpty: false,
             editMode: true,
@@ -35,7 +35,7 @@ class App extends React.Component {
             previewMode: false
         });
     }
-    cancel() {
+    onCancel() {
         this.setState({
             isEmpty: true,
             editMode: false,
@@ -49,11 +49,15 @@ class App extends React.Component {
             id: false
         });
     }
-    save(note, index) {
+    onSave(note, id) {
         let notes = this.state.notes;
+        const index = notes.findIndex((obj => obj.id === id));
+
         if (index >= 0){
+            note.id = id;
             notes[index] = note;
         }else{
+            note.id = Date.now();
             notes = [ ...notes, note]
         }
         setNotesDS(notes);
@@ -67,8 +71,8 @@ class App extends React.Component {
         this.setState((state)=>({
             notes: notes,
             id: id === state.id ? false : state.id,
-            editMode: id === state.id ? false : true,
-            previewMode:  id === state.id ? true : false
+            editMode: id !== state.id,
+            previewMode:  id === state.id
 
         }));
     }
@@ -95,41 +99,38 @@ class App extends React.Component {
         if (this.state.previewMode && this.state.id) {
             openNote = this.state.notes.find(note => note.id === this.state.id);
         }
+        const note = this.state.notes.find(note => note.id === this.state.id);
         return (
             <div className="App">
                 <Container maxWidth="lg">
                     {!this.state.notes.length && this.state.isEmpty  &&
                         <HeadlineButtonScreen
-                            create={this.create}
+                            onCreate={this.onCreate}
                             headline={"Welcome! <br/> You can create your first note."}
                         />
                     }
                     {(this.state.notes.length || !this.state.isEmpty) &&
                         <Grid container spacing={5} columns={16}>
                             <Search notes={this.state.notes} delete={this.delete} edit={this.edit} open={this.open}/>
+
                             <Grid item xs={16} md={11} className={"col-wrp"}>
                                 {((this.state.editMode || this.state.id) && !this.state.previewMode) &&
-                                    <Box component="div" className={"notes-create"}
-                                         sx={{
-                                             mb: 10
-                                         }}>
+                                    <Box component="div" className={"notes-create"} sx={{ mb: 10 }}>
                                         <NotesManage
-                                            id={this.state.id}
-                                            cancel={this.cancel}
-                                            notes={this.state.notes}
-                                            save={this.save}
-                                            create={this.create}
+                                            onCancel={this.onCancel}
+                                            note={note}
+                                            onSave={this.onSave}
                                         />
                                     </Box>
                                 }
-                                {this.state.previewMode && <NoteDetail note={openNote} create={this.create}/>}
+                                {this.state.previewMode && <NoteDetail note={openNote} onCreate={this.onCreate}/>}
                             </Grid>
 
                         </Grid>
                     }
                 </Container>
                 <div className={"fixed-button"}>
-                    <Fab color="secondary" aria-label="add" onClick={this.create}>
+                    <Fab color="secondary" aria-label="add" onClick={this.onCreate}>
                         <AddIcon/>
                     </Fab>
                 </div>
