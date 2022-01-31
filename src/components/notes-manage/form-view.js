@@ -61,30 +61,24 @@ const Form = (props) => {
             title: state.title,
             content: state.content
         }
-        //resetForm();
+        resetForm();
         props.onSave(newNote);
     }
     function onChangeTitle(e){
-        const countChar = calcCountChar(e.target, 100);
-        dispatch({
-            type: 'change',
-            payload: {
-                countCharTitle: countChar.count,
-                percentCharTitle:countChar.percent,
-                title: e.target.innerText
-            }
-        })
+        const countChar = calcCountChar(e.target.innerText, 100);
+        // if (countChar.count<0){highlightOverlimit(e.target, e.target.innerText, countChar.count)}
+        dispatch({type: 'change', payload: {
+            countCharTitle: countChar.count,
+            percentCharTitle:countChar.percent,
+            title: e.target.innerText
+        }})
     }
     function onChangeContent(e){
-        cleanUpHTML(e.target,
-            'iframe, script, noscript, frame, form, input, textarea',
-            ['data-ga ','id','jsaction', 'jscontroller', 'onclick', 'data-ved', 'ping', 'data-google-query-id','itemprop']
-        );
-        const countChar = calcCountChar(e.target,1000, false);
+        const countChar = calcCountChar(e.target.innerText,1000);
         dispatch({type: 'change', payload: {
             countCharContent: countChar.count,
             percentCharContent:countChar.percent,
-            content: e.target.innerHTML
+            content: cleanUpHTML(e.target.innerHTML)
         }})
     }
     const pageTitle = !state.noteID ? "New Note" : "Edit Note";
@@ -103,9 +97,11 @@ const Form = (props) => {
                 label = "Title"
                 value = {state.title}
                 noteID = {state.noteID}
+                excess = {state.countCharTitle}
                 changeEv = {onChangeTitle}
                 counter = {<RoundCounter count={state.countCharTitle} percent={state.percentCharTitle}/>}
                 focus = {true}
+                highlighting={true}
             />
             <EditDiv
                 type = "html"
@@ -114,7 +110,6 @@ const Form = (props) => {
                 noteID = {state.noteID}
                 changeEv = {onChangeContent}
                 counter = {<RoundCounter count={state.countCharContent} percent={state.percentCharContent}/>}
-                focus = {false}
             />
             <Stack direction="row" spacing={4} sx={{mt: 3, justifyContent:'flex-end'}}>
                 <Button aria-label="cancel" variant="text" color="secondary" startIcon={<CancelIcon />} onClick={props.onCancel}>

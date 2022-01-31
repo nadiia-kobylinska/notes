@@ -1,15 +1,6 @@
-Element.prototype.removeAttributes = function(attrs) {
-    attrs.forEach(attr => this.removeAttribute(attr))
-}
-function cleanUpHTML(el,tags, attr=[]){
-    el.querySelectorAll(tags).forEach((e)=>{
-        e.remove();
-    });
-    el.querySelectorAll('*').forEach((e) =>{
-        if(e.style.position === 'fixed'){
-            e.style.position = 'absolute'
-        }
-        e.removeAttributes(attr);
-    })
+import DOMPurify from 'dompurify'
+
+function cleanUpHTML(string){
+    return DOMPurify.sanitize(string,{ USE_PROFILES: { html: true } });
 }
 export default cleanUpHTML;

@@ -5,11 +5,8 @@ function formReducer(state, action) {
         case 'reset':
             return {...state, ...action.payload};
         case 'change':
-            return {
-                ...state,
-                ...action.payload,
-                isValid: isValid({...state, ...action.payload})
-            };
+            const nextState = { ...state, ...action.payload}
+            return {...nextState, isValid: isValid(nextState)}
         case 'loading':
             return {...state, loading: action.payload.loading};
         default:
