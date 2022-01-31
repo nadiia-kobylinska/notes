@@ -28,7 +28,7 @@ const HeadlineButtonScreen = (props) => {
                 color="secondary"
                 startIcon={<AddIcon/>}
                 size="large"
-                onClick={props.create}
+                onClick={props.onCreate}
             >
                 Create note
             </Button>
@@ -36,7 +36,7 @@ const HeadlineButtonScreen = (props) => {
     )
 }
 HeadlineButtonScreen.propTypes = {
-    create : PropTypes.func,
+    onCreate : PropTypes.func,
     headline: PropTypes.string
 }
 export default HeadlineButtonScreen;

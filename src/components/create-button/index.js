@@ -8,7 +8,7 @@ const CreateButton = (props)=>{
         color="secondary"
         startIcon={<AddIcon/>}
         size="large"
-        onClick={props.create}
+        onClick={props.onCreate}
         sx={{ mb: 5}}
     >
         Create note

@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 function createRange(node, chars, range) {
     if (!range) {
         range = document.createRange()
@@ -25,7 +27,7 @@ function createRange(node, chars, range) {
 
     return range;
 }
-function setCurrentCursorPosition(node, chars) {
+export function setCurrentCursorPosition(node, chars) {
     if (chars >= 0) {
         let selection = window.getSelection();
         let range = createRange(node, { count: chars });
@@ -47,7 +49,7 @@ function isChildOf(node, parent) {
     return false;
 }
 
-function getCurrentCursorPosition(parent) {
+export function getCurrentCursorPosition(parent) {
     let selection = window.getSelection(),
         charCount = -1,
         node;
@@ -56,7 +58,7 @@ function getCurrentCursorPosition(parent) {
         node = selection.focusNode;
         charCount = selection.focusOffset;
         while (node) {
-            if (node.id === parent.id) {
+            if (node === parent) {
                 break;
             }
 
@@ -75,23 +77,22 @@ function getCurrentCursorPosition(parent) {
     return charCount;
 }
 
-const validateTextLength = (e, field, limit, ref)=>{
-    const html = field.innerText;
-
-    let count = limit - html.length;
-    let percent = html.length * 100 / limit;
+export function highlightOverlimit(field, string, excess){
     let pos = getCurrentCursorPosition(field);
-    if (html.length > limit) {
-        let start = html.slice(0, limit);
-        let overlimit = html.slice(limit);
-        overlimit = `<span style="background:red; color:#ffffff">${overlimit}</span>`;
-        ref.current.innerHTML = start + overlimit;
-        setCurrentCursorPosition(field, pos);
-    }
+    let overLimit = Math.abs(excess);
+    let limit = string.length - overLimit;
+    let newString = `${string.slice(0, limit)}<span style="background:red; color:#ffffff">${string.slice(limit)}</span>`;
+    field.innerHTML = newString;
+    setCurrentCursorPosition(field, pos);
+    return newString;
+}
+
+const calcCountChar = (html, limit)=>{
+    let cleanText = DOMPurify.sanitize(html,{ USE_PROFILES: { html: false } });
+    let percent = cleanText.length * 100 / limit;
     return {
-        valid: percent<=100,
-        count : count,
-        percent : percent<=100 ? percent : 100.1
+        count: limit - cleanText.length,
+        percent: percent<=100 ? percent : 100.1
     }
 }
-export default validateTextLength;
+export default calcCountChar;

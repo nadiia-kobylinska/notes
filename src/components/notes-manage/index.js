@@ -1,9 +1,8 @@
 import * as React from 'react';
 import Form from "./form-view";
-export default class NotesManage extends React.Component {
-    render() {
-        return (
-            <Form id={this.props.id} cancel={this.props.cancel} notes={this.props.notes} save={this.props.save} create={this.props.create}/>
-        );
-    }
+const NotesManage = (props) => {
+    return (
+        <Form note={props.note} id={props.id} onCancel={props.onCancel} onSave={props.onSave}/>
+    );
 }
+export default NotesManage;
