@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as React from "react";
-import {plainText, truncate} from "../../utility/text";
+import {plainText, truncate} from "../../utils/text";
 
 const NotePreview = (props) => {
     const {title, content, id} = props.data;
