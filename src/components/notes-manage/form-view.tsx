@@ -2,22 +2,36 @@ import {Box, Button, Stack, Typography} from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CheckIcon from "@mui/icons-material/Check";
-import {useEffect, useReducer} from "react";
+import {ChangeEvent, SyntheticEvent, useEffect, useReducer} from "react";
 import EditDiv from "../edit-div";
 import calcCountChar from "../../utils/calc-count-char";
 import cleanUpHTML from "../../utils/clean-up-html";
-import formReducer from "./formReducer";
+import formReducer from "../../store/reducers/formReducer";
 import RoundCounter from "../round-counter";
 import {isValid} from "./func";
+import {
+    CHANGE_CONTENT_FORM,
+    CHANGE_TITLE_FORM,
+    RESET_FORM,
+    UPDATE_DATA_FORM
+} from "../../store/actionTypes";
+import {Note} from "../../types/Note";
 
-const Form = (props) => {
+type FormProps = {
+    note: Note | null;
+    id: number | null;
+    onCancel: () => void;
+    onSave: (title: string, content: string) => void;
+    onUpdate: (id: number, title: string, content: string) => void;
+}
+const Form = (props:FormProps) => {
 
     const note = props.note;
     const [state, dispatch] = useReducer(formReducer, {
             loading: false,
             title: note ? note.title : '',
             content: note ? note.content : '',
-            noteID: note ? note.id : props.id,
+            id: note ? note.id : props.id,
             countCharTitle: 0,
             percentCharTitle: 0,
             countCharContent: 0,
@@ -32,9 +46,9 @@ const Form = (props) => {
             resetForm();
             return;
         }
-        if (note.id !== state.noteID) {
-            dispatch({type: 'change', payload: {
-                noteID: note.id,
+        if (note.id !== state.id) {
+            dispatch({type: UPDATE_DATA_FORM, payload: {
+                id: note.id,
                 title: note.title,
                 content: note.content
             }})
@@ -42,11 +56,11 @@ const Form = (props) => {
     },[note,props.id]);
 
     function resetForm(){
-        dispatch({type: 'reset', payload: {
+        dispatch({type: RESET_FORM, payload: {
             loading: false,
             title: '',
             content: '',
-            noteID: props.id,
+            id: props.id,
             countCharTitle: 0,
             percentCharTitle: 0,
             countCharContent: 0,
@@ -54,34 +68,33 @@ const Form = (props) => {
             isValid: false
         }});
     }
-    function onSubmit(e) {
+    function onSubmit(e:SyntheticEvent) {
         e.preventDefault();
-        const newNote = {
-            id: state.noteID,
-            title: state.title,
-            content: state.content
+        if (state.id){
+            props.onUpdate(state.id, state.title, state.content);
+        }else{
+            props.onSave(state.title, state.content);
         }
         resetForm();
-        props.onSave(newNote);
     }
-    function onChangeTitle(e){
+    function onChangeTitle(e:ChangeEvent<HTMLInputElement>){
         const countChar = calcCountChar(e.target.innerText, 100);
         // if (countChar.count<0){highlightOverlimit(e.target, e.target.innerText, countChar.count)}
-        dispatch({type: 'change', payload: {
+        dispatch({type: CHANGE_TITLE_FORM, payload: {
             countCharTitle: countChar.count,
             percentCharTitle:countChar.percent,
             title: e.target.innerText
         }})
     }
-    function onChangeContent(e){
+    function onChangeContent(e:ChangeEvent<HTMLInputElement>){
         const countChar = calcCountChar(e.target.innerText,1000);
-        dispatch({type: 'change', payload: {
+        dispatch({type: CHANGE_CONTENT_FORM, payload: {
             countCharContent: countChar.count,
             percentCharContent:countChar.percent,
             content: cleanUpHTML(e.target.innerHTML)
         }})
     }
-    const pageTitle = !state.noteID ? "New Note" : "Edit Note";
+    const pageTitle = !state.id ? "New Note" : "Edit Note";
 
     return (
         <Box noValidate component="form" autoComplete="off" sx={{mt: 1, '& .MuiTextField-root': { m: 1, width: '100%' }}}
@@ -96,7 +109,7 @@ const Form = (props) => {
                 type = "text"
                 label = "Title"
                 value = {state.title}
-                noteID = {state.noteID}
+                id = {state.id}
                 excess = {state.countCharTitle}
                 changeEv = {onChangeTitle}
                 counter = {<RoundCounter count={state.countCharTitle} percent={state.percentCharTitle}/>}
@@ -107,7 +120,7 @@ const Form = (props) => {
                 type = "html"
                 label = "Content"
                 value = {state.content}
-                noteID = {state.noteID}
+                id = {state.id}
                 changeEv = {onChangeContent}
                 counter = {<RoundCounter count={state.countCharContent} percent={state.percentCharContent}/>}
             />

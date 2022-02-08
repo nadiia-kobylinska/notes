@@ -1,11 +1,15 @@
 import {Box} from "@mui/material";
 import * as React from "react";
-import NotePreview from "./note-preview";
+import NoteCard from "./note-card";
+import {Note} from "../../types/Note";
 
-const NoteList = (props) => {
+type NoteList = {
+    readonly notes:Note[]
+}
+const NoteList = (props:NoteList) => {
     const notes = props.notes || [];
 
-    const filtered = notes.map((note, i) => <NotePreview data={note} key={i} delete={props.delete} edit={props.edit} open={props.open}/>);
+    const filtered = notes.map((note, i) => <NoteCard note={note} key={i}/>);
     return (
         <Box sx={{
             display: 'flex',

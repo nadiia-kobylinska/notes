@@ -1,10 +1,13 @@
 import NoteList from "../notes-list/";
 import React, { useState } from 'react';
-import {Box, Stack, TextField, Grid} from "@mui/material";
+import {Stack, TextField, Grid} from "@mui/material";
+import {useListState} from "../../store/contexts/NoteListContext";
 
-const Search = (props)=>{
+const Search = ()=>{
+    const [state, _] = useListState();
+
     const [searchField, setSearchField] = useState("");
-    const notes = props.notes || [];
+    const notes = state.notes || [];
 
     const filteredNotes = notes.filter(
         note => {
@@ -28,7 +31,7 @@ const Search = (props)=>{
             <Stack spacing={2} sx={{ width: '100%' }}>
                 <TextField type = "search" placeholder = "Search" onChange = {handleChange} variant="standard" />
             </Stack>
-            <NoteList notes={filteredNotes} delete={props.delete} edit={props.edit} open={props.open}/>
+            <NoteList notes={filteredNotes}/>
         </Grid>
     );
 

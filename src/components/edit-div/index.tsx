@@ -1,16 +1,26 @@
-import * as PropTypes from "prop-types";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import EditorPanel from "../editor-panel";
 
-const EditDiv = ( {value= '', noteID= null, label= '', focus= false, type= 'html', changeEv = null, counter= null,excess= 0, highlighting= false}) => {
+type EditDivProps = {
+    value: string;
+    id: number | null;
+    label:string;
+    focus?: boolean;
+    type: string;
+    changeEv: any;
+    counter: JSX.Element,
+    excess?: number,
+    highlighting?: boolean
+}
+const EditDiv = ( {value= '', id = null, label= '', focus= false, type= 'html', changeEv = () => {}, counter = <></>, excess= 0, highlighting= false}:EditDivProps) => {
     const defaultRef = useRef(value);
     const editorRef = useRef(null);
-    const [forceUpd, setForceUpd] = useState(null);
+    const [forceUpd, setForceUpd] = useState('');
 
     useEffect(() => {
         defaultRef.current = value;
         setForceUpd(defaultRef.current);
-    }, [noteID]);
+    }, [id]);
 
     return (
         <div className={'MuiFormControl-root MuiTextField-root editable-field'}>
@@ -20,6 +30,7 @@ const EditDiv = ( {value= '', noteID= null, label= '', focus= false, type= 'html
             {type==='html' && <EditorPanel editor={editorRef}/>}
             <div className={`text-field ${type==='html' ? "html-field" : ""}`}
                  ref = {editorRef}
+                // @ts-ignore
                  contentEditable={type==='text' ? "plaintext-only" : ''}
                  dangerouslySetInnerHTML={{ __html: defaultRef.current}}
                  autoFocus={focus}
@@ -31,7 +42,5 @@ const EditDiv = ( {value= '', noteID= null, label= '', focus= false, type= 'html
         </div>
     );
 }
-EditDiv.propTypes = {
-    changeEv: PropTypes.func,
-};
+
 export default EditDiv;

@@ -4,12 +4,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as React from "react";
 import {plainText, truncate} from "../../utils/text";
+import {useListState} from "../../store/contexts/NoteListContext";
+import {Note} from "../../types/Note";
 
-const NotePreview = (props) => {
-    const {title, content, id} = props.data;
+type NoteCardProps = {
+    note: Note
+}
+const NoteCard = (props:NoteCardProps) => {
+    const {title, content, id} = props.note;
+    const [_, actions] = useListState();
 
     return(
-    <Card className={"notes-item"} onClick={()=>props.open(id)}>
+    <Card className={"notes-item"} onClick={()=>actions.previewNote(id)}>
         <CardActionArea component={"div"}>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div"  className={"notes-title"}>
@@ -24,10 +30,10 @@ const NotePreview = (props) => {
                 </Typography>
             </CardContent>
             <CardActions  className={"notes-btns"}>
-                <IconButton aria-label="edit" color="primary" onClick={(event)=>props.edit(event, id)}>
+                <IconButton aria-label="edit" color="primary" onClick={(event)=>{ event.stopPropagation(); actions.editNote(id)}}>
                     <EditIcon />
                 </IconButton>
-                <IconButton aria-label="delete" color="primary" onClick={(event)=>props.delete(event, id)}>
+                <IconButton aria-label="delete" color="primary" onClick={(event)=>{ event.stopPropagation(); actions.removeNote(id)}}>
                     <DeleteIcon />
                 </IconButton>
             </CardActions>
@@ -35,4 +41,4 @@ const NotePreview = (props) => {
     </Card>
     )
 }
-export default NotePreview;
+export default NoteCard;
