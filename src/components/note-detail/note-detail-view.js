@@ -1,10 +1,16 @@
 import {Box, Typography, Popover, Button} from "@mui/material";
-import * as PropTypes from "prop-types";
 import {useEffect, useRef, useState} from "react";
 import CreateButton from "../create-button";
+import {useListState} from "../../store/contexts/NoteListContext";
 
-const Note = (props) => {
-    const {title, content} = props.data;
+const Note = () => {
+    const [state] = useListState();
+    const {title, content} = state.notes.find((Note) => Note.id === state.editId) || {
+        title: 'Empty',
+        content: 'Choose a note to display.',
+    };
+
+    const [_, actions] = useListState();
     const contentRef = useRef(null);
     const [anchorEl, setAnchorEl] = useState('');
     const [positionPopup, setPositionPopup] = useState({top:0, left:0});
@@ -17,7 +23,7 @@ const Note = (props) => {
         return () => {
             window.removeEventListener('click', alertLink)
         }
-    },[props.data]);
+    },[title, content]);
 
     useEffect(()=>{},[anchorEl]);
 
@@ -48,7 +54,7 @@ const Note = (props) => {
             <Typography variant="h4" component="div" gutterBottom className={"notes-title"} sx={{ mb: 5}}>
                 {title}
             </Typography>
-            <CreateButton onCreate={props.onCreate}/>
+            <CreateButton onCreate={actions.createNote}/>
         </Box>
         <Box component="div">
             <Typography ref={contentRef} variant="body2" gutterBottom className={"notes-description"}
@@ -77,7 +83,5 @@ const Note = (props) => {
     </Box>
     );
 }
-Note.propTypes = {
-    data: PropTypes.object
-}
+
 export default Note;
