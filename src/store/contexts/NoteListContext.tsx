@@ -1,19 +1,19 @@
 import React, { useContext, useState } from 'react';
-import { cancelEditNote, addNote as addNote, editNote, initialState, removeNote, updateNote, previewNote, createNote } from '../reducers/NoteListReducer';
+import { onCancelEditNote, onAddNote, onEditNote, initialState, onRemoveNote, onUpdateNote, onPreviewNote, onCreateNote } from '../reducers/NoteListReducer';
 import { Dispatcher, NoteListState } from '../../types/Note';
 
 export const NoteListContext = React.createContext<[NoteListState, Dispatcher]>([initialState, () => null]);
 
-export const useListState = () => {
+export const useNoteListState = () => {
     const [state, dispatch] = useContext(NoteListContext)
     const [actions] = useState(() => ({
-        addNote: addNote(dispatch),
-        removeNote: removeNote(dispatch),
-        editNote: editNote(dispatch),
-        cancelEditNote: cancelEditNote(dispatch),
-        updateNote: updateNote(dispatch),
-        previewNote: previewNote(dispatch),
-        createNote: createNote(dispatch)
+        onAddNote: onAddNote(dispatch),
+        onRemoveNote: onRemoveNote(dispatch),
+        onEditNote: onEditNote(dispatch),
+        onCancelEditNote: onCancelEditNote(dispatch),
+        onUpdateNote: onUpdateNote(dispatch),
+        onPreviewNote: onPreviewNote(dispatch),
+        onCreateNote: onCreateNote(dispatch)
     }))
 
     return [state, actions] as const;

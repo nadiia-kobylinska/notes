@@ -1,4 +1,4 @@
-import { isValid } from '../../components/notes-manage/func';
+import { isValid } from '../../components/NoteForm/func';
 import {CHANGE_CONTENT_FORM, CHANGE_TITLE_FORM, RESET_FORM, UPDATE_DATA_FORM} from "../actionTypes";
 import {Note} from "../../types/Note";
 

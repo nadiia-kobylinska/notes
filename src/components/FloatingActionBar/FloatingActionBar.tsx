@@ -1,10 +1,10 @@
-import React from "react";
-import {Fab} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import {useListState} from "../../store/contexts/NoteListContext";
+import React from 'react';
+import { Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { useNoteListState } from '../../store/contexts/NoteListContext';
 
 export type FloatingActionBarProps = {
-    readonly onCreate: () => void;
+  readonly onCreate: () => void;
 };
 
 export const FloatingCreateButton: React.FC<FloatingActionBarProps> = ({onCreate}) => {
@@ -14,11 +14,11 @@ export const FloatingCreateButton: React.FC<FloatingActionBarProps> = ({onCreate
         </Fab>
     )
 }
-export const FloatingActionBar:React.FC = () => {
-    const [_, actions] = useListState();
+export const FloatingActionBar: React.FC = () => {
+    const [_, actions] = useNoteListState();
     return (
         <div className="fixed-button">
-            <FloatingCreateButton onCreate={actions.createNote}/>
+            <FloatingCreateButton onCreate={actions.onCreateNote}/>
         </div>
     )
 }

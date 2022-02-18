@@ -60,7 +60,7 @@ export type NoteListEvent =
     | PreviewNoteEvent;
 
 export type NoteListState = {
-  readonly notes: readonly Note[];
+  readonly notes: Note[];
   readonly editId: number | null;
   readonly mode: Mode;
 };
