@@ -6,26 +6,7 @@
     right: 2rem;
     bottom: 2rem;
 }
-.notes-item{
-    margin-bottom: 2rem;
-    width: 100%;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
-}
-.notes-btns {
-    display: flex;
-    justify-content: flex-end;
-    visibility: hidden;
-    transition: 0.5s;
-}
-.notes-item:hover .notes-btns{
-    visibility: visible;
-}
-@media (max-width: 768px) {
-    .notes-item .notes-btns{
-        visibility: visible;
-    }
-}
+
 .fullscreen-container{
     min-height: 100vh;
 }
@@ -178,23 +159,9 @@
     overflow-x: auto;
     min-height: 10rem;
 }
-.notes-description{
-    position: relative;
-    word-break: break-word;
-    max-width: 100%;
-    overflow-x: auto;
-}
-.notes-description img {
-    max-width: 100%;
-}
-.notes-description *{
-    box-sizing: border-box;
-}
+
 .html-field img {
     max-width: 100%;
-}
-.notes-description a * {
-    pointer-events: none;
 }
 @media screen and (max-width:899px){
     .col-wrp{

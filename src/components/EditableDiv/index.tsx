@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
-import EditorPanel from "../editor-panel";
+import EditorPanel from "../EditorPanel";
 
-type EditDivProps = {
+type EditableDivProps = {
     value: string;
     id: number | null;
     label:string;
@@ -12,10 +12,10 @@ type EditDivProps = {
     excess?: number,
     highlighting?: boolean
 }
-const EditDiv = ( {value= '', id = null, label= '', focus= false, type= 'html', changeEv = () => {}, counter = <></>, excess= 0, highlighting= false}:EditDivProps) => {
+const EditableDiv = ({value= '', id = null, label= '', focus= false, type= 'html', changeEv = () => {}, counter = <></>, excess= 0, highlighting= false}:EditableDivProps) => {
     const defaultRef = useRef(value);
     const editorRef = useRef(null);
-    const [forceUpd, setForceUpd] = useState('');
+    const [_, setForceUpd] = useState('');
 
     useEffect(() => {
         defaultRef.current = value;
@@ -43,4 +43,4 @@ const EditDiv = ( {value= '', id = null, label= '', focus= false, type= 'html', 
     );
 }
 
-export default EditDiv;
+export default EditableDiv;

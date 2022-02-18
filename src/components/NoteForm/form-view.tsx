@@ -3,11 +3,11 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CheckIcon from "@mui/icons-material/Check";
 import {ChangeEvent, SyntheticEvent, useEffect, useReducer} from "react";
-import EditDiv from "../edit-div";
+import EditableDiv from "../EditableDiv";
 import calcCountChar from "../../utils/calc-count-char";
 import cleanUpHTML from "../../utils/clean-up-html";
 import formReducer from "../../store/reducers/formReducer";
-import RoundCounter from "../round-counter";
+import RoundCounter from "../CounterRound";
 import {isValid} from "./func";
 import {
     CHANGE_CONTENT_FORM,
@@ -27,6 +27,7 @@ type FormProps = {
 const Form = (props:FormProps) => {
 
     const note = props.note;
+
     const [state, dispatch] = useReducer(formReducer, {
             loading: false,
             title: note ? note.title : '',
@@ -70,7 +71,7 @@ const Form = (props:FormProps) => {
     }
     function onSubmit(e:SyntheticEvent) {
         e.preventDefault();
-        if (state.id){
+        if (note?.id === state.id){
             props.onUpdate(state.id, state.title, state.content);
         }else{
             props.onSave(state.title, state.content);
@@ -105,7 +106,7 @@ const Form = (props:FormProps) => {
                     {pageTitle}
                 </Typography>
             </Box>
-            <EditDiv
+            <EditableDiv
                 type = "text"
                 label = "Title"
                 value = {state.title}
@@ -116,7 +117,7 @@ const Form = (props:FormProps) => {
                 focus = {true}
                 highlighting={true}
             />
-            <EditDiv
+            <EditableDiv
                 type = "html"
                 label = "Content"
                 value = {state.content}
