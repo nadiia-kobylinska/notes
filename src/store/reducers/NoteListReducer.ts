@@ -14,9 +14,10 @@ export const NoteListReducer = (
 ): NoteListState => {
     switch (event.type) {
         case NoteListEventType.AddNote: {
+            const id = Date.now();
             const updatedNotes = [
                 {
-                    id: Date.now(),
+                    id: id,
                     title: event.title,
                     content: event.content
                 },
@@ -25,6 +26,7 @@ export const NoteListReducer = (
             return {
                 ...state,
                 notes: updatedNotes,
+                editId: id,
                 mode: Mode.PREVIEW
             };
         }

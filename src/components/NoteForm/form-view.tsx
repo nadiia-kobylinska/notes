@@ -1,109 +1,62 @@
-import {Box, Button, Stack, Typography} from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CheckIcon from "@mui/icons-material/Check";
-import {ChangeEvent, SyntheticEvent, useEffect, useReducer} from "react";
 import EditableDiv from "../EditableDiv";
-import calcCountChar from "../../utils/calc-count-char";
-import cleanUpHTML from "../../utils/clean-up-html";
-import formReducer from "../../store/reducers/formReducer";
 import RoundCounter from "../CounterRound";
-import {isValid} from "./func";
-import {
-    CHANGE_CONTENT_FORM,
-    CHANGE_TITLE_FORM,
-    RESET_FORM,
-    UPDATE_DATA_FORM
-} from "../../store/actionTypes";
-import {Note} from "../../types/Note";
+import useStyles from "./styles";
+import { useNoteFormState } from "../../store/contexts/NoteFormContext";
+import { ChangeEvent, useEffect } from "react";
+import calcCountChar, { highlightOverlimit } from "../../utils/calc-count-char";
+import cleanUpHTML from "../../utils/clean-up-html";
+import { Note } from "../../types/Note";
 
 type FormProps = {
     note: Note | null;
-    id: number | null;
+    PageTitle: string;
     onCancel: () => void;
     onSave: (title: string, content: string) => void;
-    onUpdate: (id: number, title: string, content: string) => void;
+    onUpdate: (id:number,title: string, content: string) => void;
 }
-const Form = (props:FormProps) => {
 
-    const note = props.note;
-
-    const [state, dispatch] = useReducer(formReducer, {
-            loading: false,
-            title: note ? note.title : '',
-            content: note ? note.content : '',
-            id: note ? note.id : props.id,
-            countCharTitle: 0,
-            percentCharTitle: 0,
-            countCharContent: 0,
-            percentCharContent: 0,
-            isValid: false
-        }, (initialState) => {
-        return {...initialState, isValid: isValid(initialState)};
-    });
+const Form = ({note, PageTitle, onCancel, onUpdate, onSave}:FormProps) => {
+    const classes = useStyles();
+    const [state, actions] = useNoteFormState();
 
     useEffect(()=>{
-        if (!note) {
-            resetForm();
-            return;
-        }
-        if (note.id !== state.id) {
-            dispatch({type: UPDATE_DATA_FORM, payload: {
-                id: note.id,
-                title: note.title,
-                content: note.content
-            }})
-        }
-    },[note,props.id]);
+      if (!note) {
+        actions.onResetForm();
+        return;
+      }
+      actions.onUpdateForm( note.id, note.title, note.content );
+      console.log('update');
+    },[note]);
 
-    function resetForm(){
-        dispatch({type: RESET_FORM, payload: {
-            loading: false,
-            title: '',
-            content: '',
-            id: props.id,
-            countCharTitle: 0,
-            percentCharTitle: 0,
-            countCharContent: 0,
-            percentCharContent: 0,
-            isValid: false
-        }});
-    }
-    function onSubmit(e:SyntheticEvent) {
-        e.preventDefault();
-        if (note?.id === state.id){
-            props.onUpdate(state.id, state.title, state.content);
-        }else{
-            props.onSave(state.title, state.content);
-        }
-        resetForm();
+    const onSubmit = () => {
+      if (!!state.id){
+        onUpdate(state.id, state.title, state.content)
+      }else{
+        onSave(state.title, state.content)
+      }
+      actions.onResetForm();
     }
     function onChangeTitle(e:ChangeEvent<HTMLInputElement>){
-        const countChar = calcCountChar(e.target.innerText, 100);
-        // if (countChar.count<0){highlightOverlimit(e.target, e.target.innerText, countChar.count)}
-        dispatch({type: CHANGE_TITLE_FORM, payload: {
-            countCharTitle: countChar.count,
-            percentCharTitle:countChar.percent,
-            title: e.target.innerText
-        }})
+      const countChar = calcCountChar(e.target.innerText, 100);
+      if (countChar.count<0){
+        highlightOverlimit(e.target, e.target.innerText, countChar.count)
+      }
+      actions.onChangeTitleForm(e.target.innerText, countChar.count, countChar.percent)
     }
     function onChangeContent(e:ChangeEvent<HTMLInputElement>){
-        const countChar = calcCountChar(e.target.innerText,1000);
-        dispatch({type: CHANGE_CONTENT_FORM, payload: {
-            countCharContent: countChar.count,
-            percentCharContent:countChar.percent,
-            content: cleanUpHTML(e.target.innerHTML)
-        }})
+      const countChar = calcCountChar(e.target.innerText,1000);
+      actions.onChangeContentForm(cleanUpHTML(e.target.innerHTML), countChar.count, countChar.percent)
     }
-    const pageTitle = !state.id ? "New Note" : "Edit Note";
 
     return (
-        <Box noValidate component="form" autoComplete="off" sx={{mt: 1, '& .MuiTextField-root': { m: 1, width: '100%' }}}
-            onSubmit={onSubmit}
-        >
-            <Box sx={{display:'flex',justifyContent:'space-between',marginBottom:'1rem',mt:10, alignItems:'flex-start'}}>
-                <Typography variant="h4" component="div" gutterBottom  className={"fi=orm-title"} sx={{ mb: 5}}>
-                    {pageTitle}
+        <Box noValidate component="form" autoComplete="off" className={classes.FormNote} onSubmit={onSubmit}>
+            <Box className={classes.FormTitleWrp}>
+                <Typography variant="h4" component="div" gutterBottom className={classes.FormTitle}>
+                    {PageTitle}
                 </Typography>
             </Box>
             <EditableDiv
@@ -125,8 +78,8 @@ const Form = (props:FormProps) => {
                 changeEv = {onChangeContent}
                 counter = {<RoundCounter count={state.countCharContent} percent={state.percentCharContent}/>}
             />
-            <Stack direction="row" spacing={4} sx={{mt: 3, justifyContent:'flex-end'}}>
-                <Button aria-label="cancel" variant="text" color="secondary" startIcon={<CancelIcon />} onClick={props.onCancel}>
+            <Stack direction="row" spacing={4} className={classes.FormButtons}>
+                <Button aria-label="cancel" variant="text" color="secondary" startIcon={<CancelIcon />} onClick={onCancel}>
                     Cancel
                 </Button>
                 <LoadingButton

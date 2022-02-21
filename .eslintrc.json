@@ -19,6 +19,8 @@
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "no-shadow": "off",
+    "quotes": [2, "single", "avoid-escape"],
+    "object-curly-spacing": [0, "always", { "arraysInObjects": true, "objectsInObjects": false }],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "@typescript-eslint/no-shadow": ["error"],
