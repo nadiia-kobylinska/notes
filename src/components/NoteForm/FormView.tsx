@@ -29,7 +29,6 @@ const Form = ({note, PageTitle, onCancel, onUpdate, onSave}:FormProps) => {
         return;
       }
       actions.onUpdateForm( note.id, note.title, note.content );
-      console.log('update');
     },[note]);
 
     const onSubmit = () => {

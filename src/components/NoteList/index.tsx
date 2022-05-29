@@ -1,4 +1,4 @@
-import {Box} from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import * as React from "react";
 import NoteCard from "./NoteCard";
 import {Note} from "../../types/Note";
@@ -14,15 +14,19 @@ const NoteList = (props:NoteList) => {
     const [_, actions] = useNoteListState();
 
     const filtered = notes.map((note, i) => (
-        <NoteCard note={note} key={i}
+      <Grid item xs={16} md={4} key={i}>
+          <NoteCard note={note}
                   onPreviewNote={actions.onPreviewNote}
                   onEditNote={actions.onEditNote}
                   onRemoveNote={actions.onRemoveNote}
         />
+      </Grid>
     ));
     return (
         <Box className={classes.NoteListWrp}>
-            {filtered}
+            <Grid container spacing={2}>
+                {filtered}
+            </Grid>
         </Box>
     )
 

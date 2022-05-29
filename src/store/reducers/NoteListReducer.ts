@@ -1,11 +1,11 @@
 import {Dispatcher, NoteListEvent, NoteListEventType, NoteListState} from "../../types/Note";
 import {getNotesDS, setNotesDS} from "../../services/data.source";
-import Mode from "../../types/Mode";
+import { ViewMode } from "../../types/ViewMode";
 
 export const initialState: NoteListState = {
     notes: getNotesDS,
     editId: null,
-    mode: !getNotesDS.length ? Mode.EMPTY : Mode.PREVIEW
+    mode: !getNotesDS.length ? ViewMode.EMPTY : ViewMode.PREVIEW
 };
 
 export const NoteListReducer = (
@@ -27,7 +27,7 @@ export const NoteListReducer = (
                 ...state,
                 notes: updatedNotes,
                 editId: id,
-                mode: Mode.PREVIEW
+                mode: ViewMode.PREVIEW
             };
         }
 
@@ -43,7 +43,7 @@ export const NoteListReducer = (
             return {
                 ...state,
                 editId: event.id,
-                mode: Mode.EDIT
+                mode: ViewMode.EDIT
             };
         }
 
@@ -55,14 +55,14 @@ export const NoteListReducer = (
             return {
                 editId: event.id,
                 notes: updatedNotes,
-                mode: Mode.PREVIEW
+                mode: ViewMode.PREVIEW
             };
         }
         case NoteListEventType.CancelEditNote: {
             return {
                 ...state,
                 editId: null,
-                mode: state.notes.length ? Mode.PREVIEW : Mode.EMPTY
+                mode: state.notes.length ? ViewMode.PREVIEW : ViewMode.EMPTY
 
             };
         }
@@ -70,14 +70,14 @@ export const NoteListReducer = (
             return {
                 ...state,
                 editId: event.id,
-                mode: Mode.PREVIEW
+                mode: ViewMode.PREVIEW
             };
         }
         case NoteListEventType.CreateNote: {
             return {
                 ...state,
                 editId: Date.now(),
-                mode: Mode.EDIT
+                mode: ViewMode.EDIT
             };
         }
     }

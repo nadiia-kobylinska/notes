@@ -23,7 +23,7 @@ const Search = ()=>{
     const onChange = (e:React.ChangeEvent<HTMLInputElement>) => setSearchField(e.target.value);
 
     return (
-        <Grid className={classes.SidebarColumn} item xs={16} md={5}>
+        <Grid className={classes.SidebarColumn} item xs={16} md={16}>
             <Stack className={classes.SearchFieldWrp} spacing={2}>
                 <TextField type="search" placeholder="Search" onChange={ onChange } variant="standard" />
             </Stack>
