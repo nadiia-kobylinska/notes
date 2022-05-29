@@ -1,4 +1,4 @@
-import Mode from './Mode';
+import { ViewMode } from './ViewMode';
 
 export type Note = {
   readonly id: number;
@@ -62,6 +62,6 @@ export type NoteListEvent =
 export type NoteListState = {
   readonly notes: Note[];
   readonly editId: number | null;
-  readonly mode: Mode;
+  readonly mode: ViewMode;
 };
 export type Dispatcher = (event: NoteListEvent) => void;

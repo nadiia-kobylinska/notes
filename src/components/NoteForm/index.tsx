@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Form from "./form-view";
+import Form from "./FormView";
 import {useNoteListState} from "../../store/contexts/NoteListContext";
 import {Box} from "@mui/material";
-import { NoteFormContext, useNoteFormState } from "../../store/contexts/NoteFormContext";
+import { NoteFormContext } from "../../store/contexts/NoteFormContext";
 import { useReducer } from "react";
 import { initialState, NoteFormReducer } from "../../store/reducers/NoteFormReducer";
 import useStyles from "./styles";
@@ -13,10 +13,9 @@ export const NoteFormProvider: React.FC = ({ children }) => {
 };
 const FormNote = () => {
     const [state, actions] = useNoteListState();
-
     const note = state.notes.find((Note) => Note.id === state.editId) || null;
     const classes = useStyles();
-    const PageTitle = !!note && !note.id ? "New Note" : "Edit Note";
+    const PageTitle = !!note && !note.id ? "Edit Note" : "New Note";
 
     return (
       <NoteFormProvider>
