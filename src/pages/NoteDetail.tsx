@@ -16,8 +16,11 @@ function NoteDetail() {
     if (!!id){
       actionsNote.onPreviewNote(+id);
       actions.onChangeViewMode(+id, ViewMode.PREVIEW);
+    }else{
+      actions.onChangeViewMode(null, ViewMode.PREVIEW);
     }
   },[id]);
+
   return (
     <Lobby>
       <Grid container spacing={5} columns={16}>

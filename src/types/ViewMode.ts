@@ -1,7 +1,7 @@
 export enum ViewMode {
   PREVIEW = 'PREVIEW',
   EDIT = 'EDIT',
-  EMPTY = 'EMPTY'
+  CREATE = 'CREATE'
 }
 export enum ViewModeEventType {
   ChangeViewMode = 'ChangeViewMode'

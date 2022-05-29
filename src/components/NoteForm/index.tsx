@@ -15,7 +15,7 @@ const FormNote = () => {
     const [state, actions] = useNoteListState();
     const note = state.notes.find((Note) => Note.id === state.editId) || null;
     const classes = useStyles();
-    const PageTitle = !!note && !note.id ? "Edit Note" : "New Note";
+    const PageTitle = !!note ? "Edit Note" : "New Note";
 
     return (
       <NoteFormProvider>

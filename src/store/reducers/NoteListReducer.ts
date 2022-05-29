@@ -5,7 +5,7 @@ import { ViewMode } from "../../types/ViewMode";
 export const initialState: NoteListState = {
     notes: getNotesDS,
     editId: null,
-    mode: !getNotesDS.length ? ViewMode.EMPTY : ViewMode.PREVIEW
+    mode: ViewMode.PREVIEW
 };
 
 export const NoteListReducer = (
@@ -62,7 +62,7 @@ export const NoteListReducer = (
             return {
                 ...state,
                 editId: null,
-                mode: state.notes.length ? ViewMode.PREVIEW : ViewMode.EMPTY
+                mode: ViewMode.PREVIEW
 
             };
         }
@@ -77,7 +77,7 @@ export const NoteListReducer = (
             return {
                 ...state,
                 editId: Date.now(),
-                mode: ViewMode.EDIT
+                mode: ViewMode.CREATE
             };
         }
     }

@@ -5,11 +5,10 @@ import {
   ViewModeEventType,
   ViewModeState
 } from "../../types/ViewMode";
-import { getNotesDS } from "../../services/data.source";
 
 export const initialViewModeState: ViewModeState = {
   id: null,
-  mode: !getNotesDS.length ? ViewMode.EMPTY : ViewMode.PREVIEW
+  mode: ViewMode.PREVIEW
 }
 
 export const ViewModeReducer = (

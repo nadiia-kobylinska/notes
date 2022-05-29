@@ -1,6 +1,5 @@
-import * as React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useNoteListState} from '../../store/contexts/NoteListContext'
-import {useEffect, useRef, useState} from 'react'
 import Note from './view'
 
 export type EmptyPage = {
@@ -8,8 +7,8 @@ export type EmptyPage = {
     content: string
 }
 const EmptyPage:EmptyPage = {
-    title: 'Empty',
-    content: 'Choose a note to display.'
+    title: 'Not found',
+    content: 'The note does not exist or has been deleted.'
 }
 
 const PreviewNote = () => {

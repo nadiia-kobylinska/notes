@@ -13,9 +13,11 @@ function NoteForm() {
   const [_, actions] = useViewModeState();
   const [__, actionsNote] = useNoteListState();
   useEffect(()=>{
-    if (!!id){
+    if (!!id) {
       actionsNote.onEditNote(+id);
       actions.onChangeViewMode(+id, ViewMode.EDIT);
+    }else{
+      actions.onChangeViewMode(null, ViewMode.PREVIEW);
     }
     },[id]);
 
