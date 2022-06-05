@@ -22,7 +22,6 @@ export const NoteListReducer = (
                 },
                 ...state.notes
             ];
-            setNotesDS(updatedNotes);
             return {
                 ...state,
                 notes: updatedNotes,
@@ -32,7 +31,6 @@ export const NoteListReducer = (
 
         case NoteListEventType.RemoveNote: {
             const updatedNotes = state.notes.filter((Note) => Note.id !== event.id);
-            setNotesDS(updatedNotes);
             return {
                 ...state,
                 notes: updatedNotes
@@ -52,8 +50,6 @@ export const NoteListReducer = (
                     ? { ...Note, title: event.title, content: event.content }
                     : Note
                 );
-            setNotesDS(updatedNotes);
-
             return {
                 editId: event.id,
                 notes: updatedNotes,
