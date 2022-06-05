@@ -4,10 +4,13 @@ import calcCountChar, { highlightOverlimit } from "../../utils/calc-count-char";
 import cleanUpHTML from "../../utils/clean-up-html";
 import FormView from "./view";
 import { useNoteListState } from "../../store/contexts/NoteListContext";
+import { ViewMode } from "../../types/ViewMode";
+import { useViewModeState } from "../../store/contexts/ViewModeContext";
 
 const Form = () => {
     const [stateNote, actionsNote] = useNoteListState();
     const [state, actions] = useNoteFormState();
+    const [_, actionsViewMode] = useViewModeState();
     const note = stateNote.notes.find((Note) => Note.id === stateNote.editId) || null;
     const PageTitle = !!note ? "Edit Note" : "New Note";
 
@@ -26,6 +29,11 @@ const Form = () => {
         actionsNote.onAddNote(state.title, state.content)
       }
       actions.onResetForm();
+      actionsViewMode.onChangeViewMode(state.id, ViewMode.PREVIEW);
+    }
+    const onCancel = () => {
+      actionsNote.onCancelEditNote();
+      actionsViewMode.onChangeViewMode(state.id, ViewMode.PREVIEW);
     }
     function onChangeTitle(e:ChangeEvent<HTMLInputElement>){
       const countChar = calcCountChar(e.target.innerText, 100);
@@ -42,7 +50,7 @@ const Form = () => {
     return (
       <FormView data={state}
                 onSubmit={onSubmit}
-                onCancel={actionsNote.onCancelEditNote}
+                onCancel={onCancel}
                 PageTitle={PageTitle}
                 onChangeTitle={onChangeTitle}
                 onChangeContent={onChangeContent} />

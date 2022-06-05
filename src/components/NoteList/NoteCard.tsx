@@ -6,6 +6,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {plainText, truncate} from "../../utils/text";
 import {Note} from "../../types/Note";
 import useStyles from "./styles";
+import { ViewMode } from "../../types/ViewMode";
+import { useViewModeState } from "../../store/contexts/ViewModeContext";
 
 type NoteCardProps = {
     note: Note
@@ -16,8 +18,19 @@ type NoteCardProps = {
 const NoteCard = ({note, onPreviewNote, onEditNote, onRemoveNote}:NoteCardProps) => {
     const classes = useStyles();
     const {title, content, id} = note;
+    const [_, actions] = useViewModeState();
+
+    const goToNote = ()=>{
+        onPreviewNote(id);
+        actions.onChangeViewMode(id, ViewMode.PREVIEW);
+    }
+    const goToEditNote = (event:React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>)=>{
+        event.stopPropagation();
+        onEditNote(id)
+        actions.onChangeViewMode(id, ViewMode.EDIT);
+    }
     return(
-    <Card className={classes.NoteItem} onClick={()=>onPreviewNote(id)}>
+    <Card className={classes.NoteItem} onClick={goToNote}>
         <CardActionArea component={"div"}>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -28,8 +41,7 @@ const NoteCard = ({note, onPreviewNote, onEditNote, onRemoveNote}:NoteCardProps)
                 </Typography>
             </CardContent>
             <CardActions className={`NoteBtns ${classes.NoteBtns}`}>
-                <IconButton aria-label="edit" color="primary"
-                            onClick={(event)=>{ event.stopPropagation(); onEditNote(id)}}>
+                <IconButton aria-label="edit" color="primary" onClick={goToEditNote}>
                     <EditIcon />
                 </IconButton>
                 <IconButton aria-label="delete" color="primary"

@@ -1,11 +1,9 @@
 import {Dispatcher, NoteListEvent, NoteListEventType, NoteListState} from "../../types/Note";
-import {getNotesDS, setNotesDS} from "../../services/data.source";
-import { ViewMode } from "../../types/ViewMode";
+import {getNotesDS} from "../../services/data.source";
 
 export const initialState: NoteListState = {
     notes: getNotesDS,
-    editId: null,
-    mode: ViewMode.PREVIEW
+    editId: null
 };
 
 export const NoteListReducer = (
@@ -26,8 +24,7 @@ export const NoteListReducer = (
             return {
                 ...state,
                 notes: updatedNotes,
-                editId: id,
-                mode: ViewMode.PREVIEW
+                editId: id
             };
         }
 
@@ -42,8 +39,7 @@ export const NoteListReducer = (
         case NoteListEventType.EditNote: {
             return {
                 ...state,
-                editId: event.id,
-                mode: ViewMode.EDIT
+                editId: event.id
             };
         }
 
@@ -54,30 +50,25 @@ export const NoteListReducer = (
                 );
             return {
                 editId: event.id,
-                notes: updatedNotes,
-                mode: ViewMode.PREVIEW
+                notes: updatedNotes
             };
         }
         case NoteListEventType.CancelEditNote: {
             return {
                 ...state,
-                editId: null,
-                mode: ViewMode.PREVIEW
-
+                editId: null
             };
         }
         case NoteListEventType.PreviewNote: {
             return {
                 ...state,
-                editId: event.id,
-                mode: ViewMode.PREVIEW
+                editId: event.id
             };
         }
         case NoteListEventType.CreateNote: {
             return {
                 ...state,
-                editId: Date.now(),
-                mode: ViewMode.CREATE
+                editId: Date.now()
             };
         }
     }
@@ -102,10 +93,11 @@ export const onEditNote = (dispatch: Dispatcher) => (id: number): void =>
         id
     });
 
-export const onCancelEditNote = (dispatch: Dispatcher) => (): void =>
+export const onCancelEditNote = (dispatch: Dispatcher) => (): void =>{
     dispatch({
         type: NoteListEventType.CancelEditNote
     });
+}
 
 export const onUpdateNote = (dispatch: Dispatcher) => (
     id: number,
