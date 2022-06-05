@@ -8,7 +8,6 @@ import { ViewMode } from "../types/ViewMode";
 import { useNoteListState } from "../store/contexts/NoteListContext";
 
 function NoteForm() {
-
   const { id } = useParams();
   const [_, actions] = useViewModeState();
   const [__, actionsNote] = useNoteListState();
@@ -16,8 +15,6 @@ function NoteForm() {
     if (!!id) {
       actionsNote.onEditNote(+id);
       actions.onChangeViewMode(+id, ViewMode.EDIT);
-    }else{
-      actions.onChangeViewMode(null, ViewMode.PREVIEW);
     }
     },[id]);
 

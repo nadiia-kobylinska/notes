@@ -5,28 +5,29 @@ import NoteForm from '../pages/NoteForm';
 import Welcome from '../pages/Welcome';
 import NoteDetail from '../pages/NoteDetail';
 import { useNoteListState } from "../store/contexts/NoteListContext";
-import { ViewMode } from '../types/ViewMode';
+import { ViewMode, ViewModeState } from "../types/ViewMode";
 import { NoteListState } from '../types/Note';
+import { useViewModeState } from "../store/contexts/ViewModeContext";
 
 function WelcomeRoute(props: { redirect: JSX.Element, children: ReactNode }) {
   const [state] = useNoteListState();
   return (<>{state.notes.length ? props.children : (props.redirect ? props.redirect : <Navigate to="/"/>)}</>);
 }
-function returnURL(state: NoteListState){
+function returnURL(state: ViewModeState){
   switch (state.mode) {
-    case ViewMode.EDIT: return `notes/${state.editId}/edit`
+    case ViewMode.EDIT: return `notes/${state.id}/edit`
     case ViewMode.CREATE: return `notes/create`
-    case ViewMode.PREVIEW: return !!state.editId ? `notes/${state.editId}` : `notes`
+    case ViewMode.PREVIEW: return !!state.id ? `notes/${state.id}` : `notes`
     default: return 'notes'
   }
 }
 
 function RouterConfig() {
-  const [state] = useNoteListState();
+  const [state] = useViewModeState();
   let navigate = useNavigate();
   useEffect(() => {
     navigate(returnURL(state), { replace: true });
-  },[state.mode, state.editId]);
+  },[state.mode, state.id]);
 
   return (
     <Routes>

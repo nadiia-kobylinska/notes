@@ -1,5 +1,3 @@
-import { ViewMode } from './ViewMode';
-
 export type Note = {
   readonly id: number;
   readonly title: string;
@@ -62,6 +60,5 @@ export type NoteListEvent =
 export type NoteListState = {
   readonly notes: Note[];
   readonly editId: number | null;
-  readonly mode: ViewMode;
 };
 export type Dispatcher = (event: NoteListEvent) => void;
