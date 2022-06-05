@@ -2,10 +2,7 @@ import React, {ReactNode} from 'react';
 import { Container } from '@mui/material';
 import { FloatingActionBar } from './FloatingActionBar/FloatingActionBar';
 
-interface PageWrapperProps {
-  children?: ReactNode;
-}
-function Lobby({ children }: PageWrapperProps): JSX.Element {
+const Lobby: React.FC = ({ children }) =>{
   return (
     <>
       <Container maxWidth="lg">
