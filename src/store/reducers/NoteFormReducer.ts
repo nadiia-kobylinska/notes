@@ -1,5 +1,7 @@
 import { isValid } from '../../utils/validate';
 import { Dispatcher, NoteFormEvent, NoteFormEventType, NoteFormState } from "../../types/NoteForm";
+import calcCountChar, { highlightOverlimit } from "../../utils/calc-count-char";
+import cleanUpHTML from "../../utils/clean-up-html";
 
 export const initialState: NoteFormState = {
   loading: false,
@@ -65,22 +67,28 @@ export const onResetForm = (dispatch: Dispatcher) => (): void =>
     ...initialState
   });
 
-export const onChangeTitleForm = (dispatch: Dispatcher) => (title: string, countCharTitle: number, percentCharTitle: number): void =>
+export const onChangeTitleForm = (dispatch: Dispatcher) => (target:HTMLInputElement, limit:number): void =>{
+  const countChar = calcCountChar(target.innerText, limit);
+  highlightOverlimit(target, target.innerText, countChar.count);
+
   dispatch({
     type: NoteFormEventType.ChangeTitleForm,
-    title,
-    countCharTitle,
-    percentCharTitle
+    title: target.innerText,
+    countCharTitle: countChar.count,
+    percentCharTitle: countChar.percent
   });
+}
 
-export const onChangeContentForm = (dispatch: Dispatcher) => (content: string, countCharContent: number, percentCharContent: number): void =>
+export const onChangeContentForm = (dispatch: Dispatcher) => (target:HTMLInputElement, limit:number): void => {
+  const countChar = calcCountChar(target.innerText,limit);
+
   dispatch({
     type: NoteFormEventType.ChangeContentForm,
-    content,
-    countCharContent,
-    percentCharContent
+    content: cleanUpHTML(target.innerHTML),
+    countCharContent: countChar.count,
+    percentCharContent: countChar.percent
   });
-
+}
 
 export const onUpdateForm = (dispatch: Dispatcher) => (id: number, title: string, content: string): void =>
   dispatch({

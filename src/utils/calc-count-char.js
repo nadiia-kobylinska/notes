@@ -13,8 +13,8 @@ function createRange(node, charsInit, rangeInit) {
     range.setEnd(node, chars.count);
   } else if (node && chars.count > 0) {
     if (node.nodeType === Node.TEXT_NODE) {
-      if (node.textContent.length < chars.count) {
-        chars.count -= node.textContent.length;
+      if (+node.textContent.length < chars.count) {
+        chars.count -= +node.textContent.length;
       } else {
         range.setEnd(node, chars.count);
         chars.count = 0;
@@ -67,7 +67,7 @@ export function getCurrentCursorPosition(parent) {
 
       if (node.previousSibling) {
         node = node.previousSibling;
-        charCount += node.textContent.length;
+        charCount += +node.textContent.length;
       } else {
         node = node.parentNode;
         if (node === null) {
@@ -81,14 +81,13 @@ export function getCurrentCursorPosition(parent) {
 }
 
 export function highlightOverlimit(node, string, excess) {
-  const field = node;
-  const pos = getCurrentCursorPosition(field);
-  const overLimit = Math.abs(excess);
-  const limit = string.length - overLimit;
-  const newString = `${string.slice(0, limit)}<span style="background:red; color:#ffffff">${string.slice(limit)}</span>`;
-  field.innerHTML = newString;
-  setCurrentCursorPosition(field, pos);
-  return newString;
+  if(excess<0) {
+    const pos = getCurrentCursorPosition(node);
+    const overLimit = Math.abs(excess);
+    const limit = string.length - overLimit;
+    node.innerHTML = `${string.slice(0, limit)}<span style="background:red; color:#ffffff">${string.slice(limit)}</span>`;
+    setCurrentCursorPosition(node, pos);
+  }
 }
 
 const calcCountChar = (html, limit) => {
