@@ -2,31 +2,28 @@ import { useNoteFormState } from "../../store/contexts/NoteFormContext";
 import { ChangeEvent, useEffect } from "react";
 import calcCountChar, { highlightOverlimit } from "../../utils/calc-count-char";
 import cleanUpHTML from "../../utils/clean-up-html";
-import FormView from "./view";
+import FormView from "../Form/view";
 import { useNoteListState } from "../../store/contexts/NoteListContext";
 import { ViewMode } from "../../types/ViewMode";
 import { useViewModeState } from "../../store/contexts/ViewModeContext";
 
-const Form = () => {
+const NoteEditFormModel = () => {
     const [stateNote, actionsNote] = useNoteListState();
     const [state, actions] = useNoteFormState();
     const [_, actionsViewMode] = useViewModeState();
     const note = stateNote.notes.find((Note) => Note.id === stateNote.editId) || null;
-    const PageTitle = !!note ? "Edit Note" : "New Note";
 
     useEffect(()=>{
       if (!note) {
-        actions.onResetForm();
+        actionsViewMode.onChangeViewMode(null, ViewMode.PREVIEW);
         return;
       }
       actions.onUpdateForm(note.id, note.title, note.content );
-    },[note]);
+    },[stateNote]);
 
     const onSubmit = () => {
       if (!!state.id){
         actionsNote.onUpdateNote(state.id, state.title, state.content)
-      }else{
-        actionsNote.onAddNote(state.title, state.content)
       }
       actions.onResetForm();
       actionsViewMode.onChangeViewMode(state.id, ViewMode.PREVIEW);
@@ -51,9 +48,9 @@ const Form = () => {
       <FormView data={state}
                 onSubmit={onSubmit}
                 onCancel={onCancel}
-                PageTitle={PageTitle}
+                PageTitle="Edit Note"
                 onChangeTitle={onChangeTitle}
                 onChangeContent={onChangeContent} />
     );
 }
-export default Form;
+export default NoteEditFormModel;

@@ -1,12 +1,12 @@
 import React, { ReactNode, useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import NoteList from '../pages/NoteList';
-import NoteForm from '../pages/NoteForm';
+import NoteCreate from '../pages/NoteCreate';
+import NoteEdit from "../pages/NoteEdit";
 import Welcome from '../pages/Welcome';
 import NoteDetail from '../pages/NoteDetail';
 import { useNoteListState } from "../store/contexts/NoteListContext";
 import { ViewMode, ViewModeState } from "../types/ViewMode";
-import { NoteListState } from '../types/Note';
 import { useViewModeState } from "../store/contexts/ViewModeContext";
 
 function WelcomeRoute(props: { redirect: JSX.Element, children: ReactNode }) {
@@ -34,8 +34,8 @@ function RouterConfig() {
       <Route path="/" element={<WelcomeRoute redirect={<Welcome />}><Navigate to="/notes"/></WelcomeRoute>}/>
       <Route path="notes" element={<WelcomeRoute redirect={<Navigate to="/"/>}><NoteList /></WelcomeRoute>}/>
       <Route path="notes/:id" element={<NoteDetail />} />
-      <Route path="notes/:id/edit" element={<NoteForm />} />
-      <Route path="notes/create" element={<NoteForm />} />
+      <Route path="notes/:id/edit" element={<NoteEdit />} />
+      <Route path="notes/create" element={<NoteCreate />} />
     </Routes>
   );
 }
