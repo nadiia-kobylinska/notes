@@ -1,4 +1,4 @@
-import { isValid } from '../../components/NoteForm/func';
+import { isValid } from '../../utils/validate';
 import { Dispatcher, NoteFormEvent, NoteFormEventType, NoteFormState } from "../../types/NoteForm";
 
 export const initialState: NoteFormState = {

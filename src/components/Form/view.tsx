@@ -22,7 +22,8 @@ const FormView = ({data, PageTitle, onCancel, onChangeTitle, onChangeContent, on
   let {title, content, id, countCharTitle, percentCharTitle, countCharContent, percentCharContent, loading, isValid}=data;
 
   return (
-    <Box noValidate component="form" autoComplete="off" className={classes.FormNote} onSubmit={onSubmit}>
+    <Box component="div" className={classes.FormNoteWrp}>
+      <Box noValidate component="form" autoComplete="off" className={classes.FormNote} onSubmit={onSubmit}>
       <Box className={classes.FormTitleWrp}>
         <Typography variant="h4" component="div" gutterBottom className={classes.FormTitle}>{PageTitle}</Typography>
       </Box>
@@ -36,6 +37,7 @@ const FormView = ({data, PageTitle, onCancel, onChangeTitle, onChangeContent, on
           Save
         </LoadingButton>
       </Stack>
+      </Box>
     </Box>
   );
 }

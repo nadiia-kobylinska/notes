@@ -13,7 +13,7 @@ function NoteDetail() {
   const [__, actionsNote] = useNoteListState();
 
   useEffect(()=>{
-    if (!!id){
+    if (id !== undefined && id !== null){
       actionsNote.onPreviewNote(+id);
       actions.onChangeViewMode(+id, ViewMode.PREVIEW);
     }

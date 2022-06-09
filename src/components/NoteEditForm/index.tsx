@@ -1,7 +1,5 @@
 import React, { useReducer } from 'react';
-import Form from "./viewModel";
-import {Box} from "@mui/material";
-import useStyles from "./styles";
+import NoteEditFormModel from "./viewModel";
 import { NoteFormContext } from "../../store/contexts/NoteFormContext";
 import { initialState, NoteFormReducer } from "../../store/reducers/NoteFormReducer";
 
@@ -9,14 +7,11 @@ export const NoteFormProvider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(NoteFormReducer, initialState);
     return <NoteFormContext.Provider value={[state, dispatch]}>{children}</NoteFormContext.Provider>;
 };
-const FormNote = () => {
-    const classes = useStyles();
+const NoteEditForm = () => {
     return (
       <NoteFormProvider>
-        <Box component="div" className={classes.FormNoteWrp}>
-            <Form/>
-        </Box>
+          <NoteEditFormModel/>
       </NoteFormProvider>
     );
 }
-export default FormNote;
+export default NoteEditForm;
